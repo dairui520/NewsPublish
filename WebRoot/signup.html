@@ -1,0 +1,115 @@
+
+<!DOCTYPE html>
+<html class="login-bg">
+<head>
+	<title>注册页面</title>
+	
+    <!-- bootstrap -->
+    <link href="css/bootstrap/bootstrap.css" rel="stylesheet">
+    <link href="css/bootstrap/bootstrap-responsive.css" rel="stylesheet">
+    <link href="css/bootstrap/bootstrap-overrides.css" type="text/css" rel="stylesheet">
+
+    <!-- global styles -->
+    <link rel="stylesheet" type="text/css" href="css/compiled/layout.css">
+    <link rel="stylesheet" type="text/css" href="css/compiled/elements.css">
+    <link rel="stylesheet" type="text/css" href="css/compiled/icons.css">
+
+    <!-- libraries -->
+    <link rel="stylesheet" type="text/css" href="css/lib/font-awesome.css">
+    
+    <!-- this page specific styles -->
+    <link rel="stylesheet" href="css/compiled/signup.css" type="text/css" media="screen" />
+
+    <!-- open sans font -->
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+</head>
+<body>
+    <div class="header">
+        <a href="index.html">
+            <img src="img/logo.png" class="logo" />
+        </a>
+    </div>
+    <div class="login-wrapper">
+        <div class="box">
+            <div class="content-wrap">
+                <h6>Sign Up</h6>
+                <form action="" name="loginform" id="loginform">
+                <input class="form-control" type="text" name="username" id="username" placeholder="Pick a username">
+                <input class="form-control" type="password" name="password" id="password" placeholder="Create a password">
+                <input class="form-control" type="password" name="pwd" id="pwd" placeholder="Confirm the password ">
+                <div class="action">
+                    <input class="btn-glow primary signup" value="注册" onclick="SignUp()" type="button"> 
+                </div>                
+                </form>
+                
+            </div>
+        </div>
+
+        <div class="already">
+            <p>Already have an account?</p>
+            <a href="signin.html">Sign in</a>
+        </div>
+    </div>
+
+	<!-- scripts -->
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/theme.js"></script>
+    
+    
+    <script src="layer/layer.js"></script>
+	<link rel="stylesheet" type="text/css" href="layer/skin/layer.css">
+	<script type="text/javascript">
+		function SignUp() {
+		 if(loginform.username.value==""){       //验证用户名是否为空
+        	layer.msg('请输入用户名！', {icon : 7},1000);
+        	loginform.username.focus();
+        	return false;
+    	}
+    	if(loginform.password.value==""){       //验证密码是否为空
+			layer.msg('请输入密码！', {icon : 7},1000);
+        	loginform.password.focus();
+        	return false;
+    	}
+    	if(loginform.password.value.length < 6){       //验证密码强度
+			layer.msg('密码强度不够！', {icon : 7},1000);
+        	loginform.password.focus();
+        	return false;
+    	}
+    	if(loginform.password.value!=loginform.pwd.value){       //验证密码是否为空
+			layer.msg('两次密码不一样，请重新输入！', {icon : 7},1000);
+        	loginform.password.focus();
+        	return false;
+    	}      
+		$.ajax({
+        'type' : 'POST',
+        'url' : "Login!SignUp.action",
+        dataType : "text",
+        data : { //发送给数据库的数据
+            username : $("#username").val(),
+            password : $("#password").val()
+        },
+        contentType : 'application/x-www-form-urlencoded; charset=UTF-8',//防止乱码
+        'success' : function(data) {
+        	if(data=="regitered")
+        	{
+        		layer.msg('用户名已存在，请重新输入！', {icon : 2},1000);
+        	}
+            if (data == "ok") {
+                layer.msg('注册成功', {icon : 1}, 1000);
+                setTimeout(function() {window.location.href = "signin.html";}, 1000);
+            } else if(data=="no") {
+                layer.msg('注册失败,请稍后再试', {icon : 2});
+            }
+        },
+        'error' : function(data) {layer.msg('服务器出错', {icon : 2});}
+        });
+	}
+	</script>
+    
+</body>
+</html>

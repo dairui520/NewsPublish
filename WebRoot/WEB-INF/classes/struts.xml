@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+	"http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<!-- 指定全局国际化资源文件base名 -->
+	<constant name="struts.custom.i18n.resources" value="messageResource" />
+
+	<!--设置Struts2 动态方法调用 -->
+	<constant name="struts.enable.DynamicMethodInvocation" value="true" />
+	<!-- 指定国际化编码所使用的字符集 -->
+	<constant name="struts.i18n.encoding" value="UTF-8" />
+	<!-- 所有的Action定义都应该放在package下 -->
+	<package name="my-default" extends="struts-default">
+
+		<interceptors>
+			<interceptor name="authority" class="com.cdy.interceptor.LoginInterceptor" />
+			<interceptor-stack name="mydefault">
+				<interceptor-ref name="defaultStack" />
+				<interceptor-ref name="authority" />
+			</interceptor-stack>
+		</interceptors>
+		<global-results>
+			<result name="login" type="redirect">/signin.html</result>
+		</global-results>	
+	
+	
+		<!-- 定义处理用户请求的Action，指定该Action的实现类 -->
+		<action name="Login" class="com.cdy.action.LoginAction">
+			<!-- 为逻辑视图配置视图页面 -->
+			
+		</action>
+
+		<action name="HomeManage" class="com.cdy.action.HomeManage">
+			<!-- 为逻辑视图配置视图页面 -->
+			<interceptor-ref name="mydefault" />
+		</action>
+
+		<action name="NewsDetail" class="com.cdy.action.NewsDetail">
+			<!-- 为逻辑视图配置视图页面 -->
+			<interceptor-ref name="mydefault" />
+			<result name="success">/Aiticle_Detail.jsp</result>
+		</action>
+
+		<!-- 定义处理用户请求的Action，指定该Action的实现类 -->
+		<action name="NewsManage" class="com.cdy.action.NewsManage">
+			<!-- 为逻辑视图配置视图页面 -->
+
+			<result name="success">/NewManage/NewsList.jsp</result>
+			<result name="input" type="redirect">/NewManage/AddNews.jsp</result>
+			<result name="DETAIl">/NewManage/News_Detail.jsp</result>
+			<interceptor-ref name="mydefault" />
+		</action>
+		
+
+	</package>
+
+
+</struts>    

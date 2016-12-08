@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!--上面四行对所有的hibernate映射文件都相同 -->
+<!-- hibernate-mapping是映射文件的根元素 -->
+<hibernate-mapping package="com.cdy.POJO">
+	<!-- 每个class元素对应一个持久化对象   mysql windows 不区分大小写-->
+	<class name="Content" table="Content">
+		<!-- id元素定义持久化类的标识属性 -->
+		<id name="id" unsaved-value="null">
+			<generator class="identity" />
+		</id>
+		<!-- property元素定义常规属性 -->
+
+		<property name="title" />
+		<property name="content">
+			<column name="content" length="2147483647" />
+		</property>
+		<property name="type">
+		</property>
+		<property name="updatetime" type="java.sql.Timestamp">
+			<column name="updatetime" length="19" />
+		</property>
+		<property name="updateip" />
+		<property name="updateadmin" />
+
+	</class>
+	<class name="Admin" table="admin">
+		<!-- id元素定义持久化类的标识属性 -->
+		<id name="id" unsaved-value="null">
+			<generator class="identity" />
+		</id>
+		<!-- property元素定义常规属性 -->
+
+		<property name="username" />
+		<property name="password" />
+
+	</class>
+</hibernate-mapping>

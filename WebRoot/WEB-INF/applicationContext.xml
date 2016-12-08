@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="GBK"?>
+<!-- 指定Spring配置文件的Schema信息 -->
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/tx 
+	http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+	http://www.springframework.org/schema/aop 
+	http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
+	<!-- 定义数据源Bean，使用C3P0数据源实现 -->
+	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
+		destroy-method="close">
+		<!-- 指定连接数据库的驱动 -->
+		<property name="driverClass" value="com.mysql.jdbc.Driver"/>
+		<!-- 指定连接数据库的URL -->
+		<property name="jdbcUrl" value="jdbc:mysql://localhost:3306/hibernate?useUnicode=true&amp;characterEncoding=UTF-8"/>
+		<!-- 指定连接数据库的用户名 -->
+		<property name="user" value="root"/>
+		<!-- 指定连接数据库的密码 -->
+		<property name="password" value="dairui20124"/>
+		<!-- 指定连接数据库连接池的最大连接数 -->
+		<property name="maxPoolSize" value="40"/>
+		<!-- 指定连接数据库连接池的最小连接数 -->
+		<property name="minPoolSize" value="1"/>
+		<!-- 指定连接数据库连接池的初始化连接数 -->
+		<property name="initialPoolSize" value="1"/>
+		<!-- 指定连接数据库连接池的连接的最大空闲时间 -->
+		<property name="maxIdleTime" value="20"/>
+	</bean>
+	<!-- 定义Hibernate的SessionFactory -->
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+		<!-- 依赖注入数据源，注入正是上面定义的dataSource -->
+		<property name="dataSource" ref="dataSource"/>
+		<!-- mappingResouces属性用来列出全部映射文件 -->
+		<property name="mappingResources">
+			<list>
+				<!-- 以下用来列出Hibernate映射文件 -->
+				<value>com/cdy/POJO/content.hbm.xml</value>
+			</list>
+		</property>
+		<!-- 定义Hibernate的SessionFactory的属性 -->
+		<property name="hibernateProperties">
+			<!-- 配置Hibernate属性 -->
+			<props>   
+				<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>   
+				<prop key="hibernate.hbm2ddl.auto">update</prop>   
+				<!-- <prop key="hibernate.show_sql">true</prop> -->
+				<prop key="hibernate.format_sql">true</prop>    
+			</props>
+		
+		</property>
+		
+	</bean>
+	
+	<!-- 定义AdminDAO Bean-->
+	<bean id="adminDao" class="com.cdy.dao.impl.AdminDaoHibernate">
+		<!-- 注入持久化操作所需的SessionFactory -->
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	
+	<!-- 定义ContentDAO Bean-->
+	<bean id="contentDao" class="com.cdy.dao.impl.ContentDaoHibernate">
+		<!-- 注入持久化操作所需的SessionFactory -->
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	
+	<!-- 配置一个登陆注册逻辑组件 -->
+	<bean id="loginService" class="com.cdy.service.impl.LoginServiceImpl">
+		<!-- 注入持久化访问所需的DAO组件 -->
+		<property name="adminDao" ref="adminDao"/>
+	</bean>
+	
+	<!-- 配置一个 新闻管理逻辑组件-->
+	<bean id="newsService" class="com.cdy.service.impl.NewsServiceImpl">
+		<!-- 注入持久化访问所需的DAO组件 -->
+		<property name="contentDao" ref="contentDao"/>
+	</bean>
+	<!-- 配置一个分页javaBean -->
+	<bean id="pageBean" class="com.cdy.javabean.PageBean" scope="prototype">
+	</bean>
+	<!-- <bean id="loginAction" class="com.cdy.action.LoginAction" scope="prototype">
+		
+		<property name="loginService" ref="LoginService"/>
+	</bean> -->
+
+
+</beans>
+
