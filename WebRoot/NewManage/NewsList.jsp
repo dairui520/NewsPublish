@@ -76,8 +76,7 @@
             }(),
             jump: function (e, first) { //触发分页后的回调
                 if (!first) { //一定要加此判断，否则初始时会无限刷新
-
-                    //location.href = 'Index?page=' + e.curr;
+   
                     location.href="NewsManage.action?"+'&query_start_date='+N_ST +'&query_end_date='+N_ET
                     +'&title='+title
                     +'&type='+type
@@ -145,9 +144,11 @@
                 </span></a></td>              
                 <td class="titlenowbg" height="32" valign="top" width="5%" style="text-align:center;vertical-align:middle;font-size: 14px;/*设置垂直居中*/"><span><s:property value="#content.type"/></span></td>               
                 <td class="titlenowbg" height="32" valign="top" width="10%" style="text-align:center;vertical-align:middle;font-size: 14px;/*设置垂直居中*/">
-                <a href="javascript:void(0)" onclick="DeleteNews(<s:property value="#content.id"/>)"><span class="icon-trash-o" >删除 </span></a>
+                <a href="javascript:void(0)" onclick="DeleteNews(<s:property value="#content.id"/>)"><span class="icon-trash-o" >删除&nbsp;</span></a>|
               	<a href=' <s:url  action="NewsManage!update_News.action">  
-             	<s:param name="id" value="#content.id"></s:param>  </s:url>' > 
+             	<s:param name="id" value="#content.id"></s:param>
+             	
+             	  </s:url>' > 
              	<span class="icon-edit">修改</span>
              	</a>           
                 </td>

@@ -16,7 +16,6 @@ import javax.servlet.http.HttpSession;
 import org.hibernate.Query;
 import org.hibernate.Session;
 
-import com.cdy.utils.HibernateUtil;
 import com.opensymphony.xwork2.ActionContext;
 
 public class myfilter implements Filter {

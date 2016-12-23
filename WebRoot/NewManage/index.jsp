@@ -29,7 +29,7 @@
    
   </ul>   
   <h2><span class="icon-pencil-square-o"></span>栏目管理</h2>
-  <ul>
+  <ul style="display:block">
     <li><a href="<%=path %>/NewManage/AddNews.jsp" ><span class="icon-caret-right"></span>发布新闻</a></li>
     <li><a href="<s:url  action="NewsManage.action"></s:url>"><span class="icon-caret-right"></span>新闻列表</a></li>
     <li><a href="#" ><span class="icon-caret-right"></span>分类管理</a></li>        

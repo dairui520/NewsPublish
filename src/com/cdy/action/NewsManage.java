@@ -18,7 +18,6 @@ import org.omg.CORBA.Request;
 import com.cdy.POJO.Content;
 import com.cdy.javabean.PageBean;
 import com.cdy.service.NewsService;
-import com.cdy.utils.HibernateUtil;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
@@ -33,12 +32,12 @@ public class NewsManage extends ActionSupport {
 	private Content content; // 修改新闻需要使用
 	private String title;
 	private String type;
-	private String page; // 当前的页面数
+	private String page; // 当前的页面值
 	private String query_start_date;
 	private String query_end_date;
 	private NewsService newsService;
 	private ArrayList<Content> listContents;
-
+	
 	private long totalCount; // 记录总数
 
 	public long getTotalCount() {
@@ -169,6 +168,7 @@ public class NewsManage extends ActionSupport {
 		Timestamp time = new Timestamp(System.currentTimeMillis());
 		content.setUpdatetime(time);
 		newsService.sava(content);
+		clearValue();
 		sreach();
 		return SUCCESS;
 	}
@@ -178,50 +178,46 @@ public class NewsManage extends ActionSupport {
 	 */
 	public void sreach() {
 		int currentPage;
-		PageBean pager = new PageBean();
+		PageBean pager=new PageBean(); // 分页类
 		String hql = null;
-		pager.NumPerPage = 2;
+		pager.NumPerPage = 2; // 每页显示的数目
 		pager.SearchData = "1=1"; // 默认查询条件，防止出错
+		String username = ActionContext.getContext().getSession()
+				.get("username").toString();
+		// 判断是管理员还是普通用户
+		if (!username.equals("admin")) {
+			// 如果不是管理员，查询出来的文章只能是自己的
+			pager.SearchData += " and updateadmin='" + username + "'";
+		}
 
-		// 判断是否是更新的后的提交查找
-		if (id > 0) {
-			long TotalCount = newsService.getContentNumber(pager.SearchData);
-			totalCount = (TotalCount % 2 == 0 ? TotalCount / 2
-					: TotalCount / 2 + 1);
-			pager.TotlaPage = (int) totalCount;
-			listContents = (ArrayList<Content>) newsService
-					.getItemsContents(pager);
+		
+		if (page == null || page.isEmpty()) {
+			pager.CurrentPage = 1; // 设置初始页
 		} else {
-			if (page == null || page.isEmpty()) {
-				pager.CurrentPage = 1; // 设置初始页
-			} else {
-				pager.CurrentPage = Integer.parseInt(page); // 给分页类当前页赋值
-			}
+			pager.CurrentPage = Integer.parseInt(page); // 给分页类当前页赋值
+		}
 
-			if (query_start_date != null && !query_start_date.trim().equals("")
-					&& query_end_date != null
-					&& !query_end_date.trim().equals("")) {
-				Timestamp startTime = Timestamp.valueOf(query_start_date
-						+ ":00");
-				Timestamp endTime = Timestamp.valueOf(query_end_date + ":00");
+		if (query_start_date != null && !query_start_date.trim().equals("")
+				&& query_end_date != null && !query_end_date.trim().equals("")) {
+			Timestamp startTime = Timestamp.valueOf(query_start_date + ":00");
+			Timestamp endTime = Timestamp.valueOf(query_end_date + ":00");
 
-				if (startTime.getTime() - endTime.getTime() > 0) {
-					/* return "时间选择错误"; */
-				}
-				pager.SearchData += " and updatetime >= '" + startTime
-						+ "'and updatetime <='" + query_end_date + "'";
+			if (startTime.getTime() - endTime.getTime() > 0) {
+				/* return "时间选择错误"; */
 			}
+			pager.SearchData += " and updatetime >= '" + startTime
+					+ "'and updatetime <='" + query_end_date + "'";
+		}
 
-			if (title != null && !title.trim().isEmpty()) {
-				title = title.trim();
-				// 模糊查询
-				pager.SearchData += " and title like '%" + title + "%'";
-			}
-			if (type != null && !title.trim().isEmpty()) {
-				type = type.trim();
-				// 模糊查询
-				pager.SearchData += " and type like '%" + type + "%'";
-			}
+		if (title != null && !title.trim().isEmpty()) {
+			title = title.trim();
+			// 模糊查询
+			pager.SearchData += " and title like '%" + title + "%'";
+		}
+		if (type != null && !type.trim().isEmpty()) {
+			type = type.trim();
+			// 模糊查询
+			pager.SearchData += " and type like '%" + type + "%'";
 		}
 
 		// 求总页数
@@ -251,6 +247,10 @@ public class NewsManage extends ActionSupport {
 		Timestamp time = new Timestamp(System.currentTimeMillis());
 		content.setUpdatetime(time);
 		newsService.update(content);
+		System.out.println(page);
+		// 清除值栈
+		clearValue();
+
 		sreach();
 		return SUCCESS;
 
@@ -279,9 +279,9 @@ public class NewsManage extends ActionSupport {
 
 			PrintWriter out = response.getWriter();
 			out.print(1);
-			
+
 		} catch (IOException e) {
-		
+
 			e.printStackTrace();
 		}
 	}
@@ -299,6 +299,15 @@ public class NewsManage extends ActionSupport {
 		content = newsService.get(id);
 		detail_Content = content.getContent();
 		return "DETAIl";
+	}
+
+	/**
+	 * 清楚值栈的属性值
+	 */
+	private void clearValue() {
+		title = "";
+		type = "";
+
 	}
 
 }

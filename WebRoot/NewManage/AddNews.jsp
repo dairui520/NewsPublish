@@ -54,6 +54,7 @@ if(!id.equals("")){
                     <div class="label">
                         <label for="title" class="validation">新闻标题：</label>
                         <input name="id" type="hidden" value="<%=content.getId()%>">
+                   
                     </div>
                     <div class="field">
                         <input type="text" id="title" style="width:25%; height:35px; float:left" class=" input w50" value="<%=content.getTitle() %>" name="title" data-validate="required:请输入新闻标题" />

@@ -61,8 +61,6 @@ public class ContentDaoHibernate extends HibernateDaoSupport implements
 			hql="1=1";
 		}
 		
-		
-		System.out.println(hql);
 		return (Long) getHibernateTemplate().find(
 				"select count(*) from Content where "+hql).get(0);
 	}
@@ -70,7 +68,7 @@ public class ContentDaoHibernate extends HibernateDaoSupport implements
 	@Override
 	public List findByPage(final String hql, final int offset,final int pageSize) {
 		
-		System.out.println(hql);
+//		System.out.println(hql);
 		List list = getHibernateTemplate().executeFind(new HibernateCallback() {
 
 			public Object doInHibernate(Session session)throws HibernateException, SQLException {
@@ -94,7 +92,7 @@ public class ContentDaoHibernate extends HibernateDaoSupport implements
 				try {
 					String hql="from Content where "+pager.SearchData+" ORDER BY ID desc limit "
 							+pager.NumPerPage*(pager.CurrentPage-1)+","+pager.NumPerPage;
-					System.out.println(hql);
+					
 					 result =  session.createQuery("from Content where "+pager.SearchData+" ORDER BY ID desc ")
 					.setFirstResult(pager.NumPerPage*(pager.CurrentPage-1))
 					.setMaxResults(pager.NumPerPage)

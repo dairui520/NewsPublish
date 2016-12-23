@@ -22,13 +22,13 @@
 		</interceptors>
 		<global-results>
 			<result name="login" type="redirect">/signin.html</result>
-		</global-results>	
-	
-	
+		</global-results>
+
+
 		<!-- 定义处理用户请求的Action，指定该Action的实现类 -->
 		<action name="Login" class="com.cdy.action.LoginAction">
 			<!-- 为逻辑视图配置视图页面 -->
-			
+
 		</action>
 
 		<action name="HomeManage" class="com.cdy.action.HomeManage">
@@ -51,7 +51,7 @@
 			<result name="DETAIl">/NewManage/News_Detail.jsp</result>
 			<interceptor-ref name="mydefault" />
 		</action>
-		
+
 
 	</package>
 

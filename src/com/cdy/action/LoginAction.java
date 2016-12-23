@@ -11,7 +11,6 @@ import org.hibernate.Transaction;
 
 import com.cdy.POJO.Admin;
 import com.cdy.service.LoginService;
-import com.cdy.utils.HibernateUtil;
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 

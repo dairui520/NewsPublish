@@ -59,7 +59,7 @@
 	<!-- 定义AdminDAO Bean-->
 	<bean id="adminDao" class="com.cdy.dao.impl.AdminDaoHibernate">
 		<!-- 注入持久化操作所需的SessionFactory -->
-		<property name="sessionFactory" ref="sessionFactory"/>
+		<property name="sessionFactory" ref="sessionFactory"/> 
 	</bean>
 	
 	<!-- 定义ContentDAO Bean-->
@@ -79,13 +79,13 @@
 		<!-- 注入持久化访问所需的DAO组件 -->
 		<property name="contentDao" ref="contentDao"/>
 	</bean>
-	<!-- 配置一个分页javaBean -->
-	<bean id="pageBean" class="com.cdy.javabean.PageBean" scope="prototype">
+	
+	
+	<!-- 配置一个分页javaBean 原型模式prototype 每次产生新的bean对象 -->
+	 <bean id="pager" class="com.cdy.javabean.PageBean" scope="prototype">
 	</bean>
-	<!-- <bean id="loginAction" class="com.cdy.action.LoginAction" scope="prototype">
-		
-		<property name="loginService" ref="LoginService"/>
-	</bean> -->
+	
+
 
 
 </beans>

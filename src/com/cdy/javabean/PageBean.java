@@ -5,7 +5,7 @@ public class PageBean {
 	/// <summary>
     /// 请求的当前页
     /// </summary>
-    public int CurrentPage ;
+    public  int CurrentPage ;
 
     /// <summary>
     /// 每一页显示的条目
