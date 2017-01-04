@@ -199,8 +199,8 @@ public class NewsManage extends ActionSupport {
 
 		if (query_start_date != null && !query_start_date.trim().equals("")
 				&& query_end_date != null && !query_end_date.trim().equals("")) {
-			Timestamp startTime = Timestamp.valueOf(query_start_date + ":00");
-			Timestamp endTime = Timestamp.valueOf(query_end_date + ":00");
+			Timestamp startTime = Timestamp.valueOf(query_start_date );
+			Timestamp endTime = Timestamp.valueOf(query_end_date );
 
 			if (startTime.getTime() - endTime.getTime() > 0) {
 				/* return "Ê±¼äÑ¡Ôñ´íÎó"; */

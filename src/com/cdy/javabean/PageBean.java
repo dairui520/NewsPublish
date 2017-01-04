@@ -1,5 +1,9 @@
 package com.cdy.javabean;
 
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
 public class PageBean {
 
 	/// <summary>
@@ -28,8 +32,9 @@ public class PageBean {
 		return CurrentPage;
 	}
 
-	public void setCurrentPage(int currentPage) {
+	public void setCurrentPage(int currentPage) throws ParseException {
 		CurrentPage = currentPage;
+		
 	}
 
 	public int getNumPerPage() {

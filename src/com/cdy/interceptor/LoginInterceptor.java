@@ -24,6 +24,7 @@ public class LoginInterceptor extends AbstractInterceptor {
 	
 		if (username != null && !username.isEmpty() )
 		{
+		
 			return arg0.invoke();
 		}else {
 			return Action.LOGIN;
