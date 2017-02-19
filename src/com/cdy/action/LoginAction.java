@@ -20,8 +20,17 @@ public class LoginAction extends ActionSupport {
 	private Admin admin;
 	private String username;
 	private String password;
+	private String verificationCode;
 	private LoginService loginService;
 
+	
+	public String getVerificationCode() {
+		return verificationCode;
+	}
+
+	public void setVerificationCode(String verificationCode) {
+		this.verificationCode = verificationCode;
+	}
 	public LoginService getLoginService() {
 		return loginService;
 	}
@@ -38,42 +47,41 @@ public class LoginAction extends ActionSupport {
 		this.admin = admin;
 	}
 
-	public void login() {
+	public void login() throws Exception {
 		HttpServletResponse response = ServletActionContext.getResponse();
+		response.setContentType("text/html;charset=UTF-8");
 		PrintWriter pw;
 		username = username != null ? username : "";
 		password = password != null ? password : "";
 		admin = new Admin();
 		admin.setUsername(username);
 		admin.setPassword(password);
-
-		if (loginService.signIn(admin)) {
-			try {
+		String verifyCode= (String) ServletActionContext.getRequest().getSession().getAttribute("code");
+		
+		pw = response.getWriter();
+		if (verifyCode.toLowerCase().equals(verificationCode.toLowerCase())) {
+			
+			if (loginService.signIn(admin)) {
 				// 存入session中
 				ActionContext.getContext().getSession()
-						.put("username", username);
-				pw = response.getWriter();
+						.put("username", username);			
 				JsonResult(pw, "ok");
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			} else {		
+					pw = response.getWriter();
+					JsonResult(pw, "no");
+				
 			}
-		} else {
-			try {
-				pw = response.getWriter();
-				JsonResult(pw, "no");
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+		}else {
+			JsonResult(pw, "验证码错误！");
 		}
-
+		
 	}
 
 	// 注册用户
 	public void SignUp() {
 
 		HttpServletResponse response = ServletActionContext.getResponse();
+		response.setContentType("utf-8");
 		PrintWriter pw;
 		username = username != null ? username : "";
 		password = password != null ? password : "";

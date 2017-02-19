@@ -10,7 +10,7 @@
 	http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
 	http://www.springframework.org/schema/aop 
 	http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
-	<!-- 定义数据源Bean，使用C3P0数据源实现 -->
+	<!-- 定义数据源Bean，使用C3P0数据源实现   数据源是sessionFactory的属性 -->
 	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
 		destroy-method="close">
 		<!-- 指定连接数据库的驱动 -->
